@@ -1,0 +1,410 @@
+To specify the DBs path (and run server):
+	>mongod.exe --dbpath "C:\data"
+To run Mongo:
+	>mongo.exe
+-----------------
+//================================================
+
+1-msi
+https://www.mongodb.com/try/download/community
+
+mongoshell
+https://www.mongodb.com/try/download/shell
+
+
+compass
+https://www.mongodb.com/try/download/compass
+//================================================
+To Create DB (select DB or create it if not exist):
+	>use mydb
+To check your currently selected database use the command db
+	>db
+If you want to check your databases list, then use the command show dbs.
+	>show dbs
+To drop the selected DB
+	>db.dropDatabase()
+------------------------
+Create collection:
+Basic Syntax:
+db.createCollection(name, options)
+
+Example:
+>db.createCollection("mycollection")
+
+Show Collections:
+>show collections
+
+Drop Collection:
+Syntax
+db.COLLECTION_NAME.drop()
+
+Example:
+>db.mycollection.drop()
+
+------------------------
+
+////////========CRUD OPERATION==========DOCUMENT================
+
+//================INSERT=============================================
+
+Also, In MongoDB, you don't need to create collection. MongoDB creates collection automatically, when you insert some document.
+
+To insert Document (and create the collection on the fly):
+Basic syntax of insert() command is as follows ?
+	>db.COLLECTION_NAME.insertOne(document) 
+        >db.COLLECTION_NAME.insertMany([document,document]) 
+
+Example 1:
+	>db.mycol.insertOne({title: 'MongoDB Overview', 
+   description: 'MongoDB is no sql database',
+   by: 'tutorials point',
+   url: 'http://www.tutorialspoint.com',
+   tags: ['mongodb', 'database', 'NoSQL'],
+   likes: 100})
+
+Example2:
+	>db.post.insertOne({
+      title: 'MongoDB Overview', 
+      description: 'MongoDB is no sql database',
+      by: 'tutorials point',
+      url: 'http://www.tutorialspoint.com',
+      tags: ['mongodb', 'database', 'NoSQL'],
+      likes: 100
+   })
+///=======================================
+   >db.post.insertMany([{
+      title: 'NoSQL Database', 
+      description: "NoSQL database doesn't have tables",
+      by: 'tutorials point',
+      url: 'http://www.tutorialspoint.com',
+      tags: ['mongodb', 'database', 'NoSQL'],
+      likes: 20, 
+      comments: [ 
+         {
+            user:'user1',
+            message: 'My first comment',
+            dateCreated: new Date(2013,11,10,2,35),
+            like: 0 
+         }
+      ]
+   },
+   {
+      title: 'SQL Database', 
+      description: "SQL database doesn't have tables",
+      by: 'anything',
+      url: 'http://www.tutorialspoint.com',
+      tags: ['mongodb', 'database', 'SQL'],
+      likes: 50, 
+      comments: [ 
+         {
+            user:'user1',
+            message: 'My first comment',
+            dateCreated: new Date(2013,11,10,2,35),
+            like: 0 
+         }
+      ]
+   }])
+
+-------------------------
+///=============FIND========================================
+Query Document:
+Basic syntax of find() method is as follows
+        >db.COLLECTION_NAME.find()
+	>db.post.find({key1:value1, key2:value2})
+
+The pretty() Method
+	To display the results in a formatted way, you can use pretty() method.
+
+Example (Display all):
+	>db.post.find().pretty()
+	>db.post.find({"by":"tutorials point"}).pretty()
+
+---------------------
+///===============PROJECTION====================
+Projection with find():>>Get Specify Data fields After find
+----------------
+db.collection.find(
+   { filter },
+   { projection }
+)
+-----------
+Example (Display specific fields):
+	>db.post.find({},{title:1});
+
+
+Example3:
+	>db.post.find({"likes":100,"title":"MongoDB Overview"},{title:1,by:1,likes:1})
+-----
+////====================Filtering results=>> PAGINATION ==========================
+>db.COLLECTION_NAME.find().limit(NUMBER)
+
+>db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+----
+Sorting:
+>db.COLLECTION_NAME.find().sort({KEY:1})
+
+---
+    Ascending: -1
+    Descending: 1
+-----------------------
+//=========================== UPDATE ==========================
+
+
+Update Document:
+Basic syntax of updateOne() or updateMany() 
+method is as follows
+	>db.COLLECTION_NAME.update({SELECTIOIN_CRITERIA}, {UPDATED_DATA})
+
+db.collection.updateMany(
+   { filter },
+   { update },
+   { options }
+)
+
+OR
+
+
+The replaceOne() 
+method replaces the existing document with the new document passed in replaceOne() method
+Syntax
+
+
+
+
+Example1:
+	>db.post.updateone({'title':'MongoDB Overview'},{$set:{'by':'ITI'}})
+
+Example2:
+	
+	>db.mycol.updateMany({'title':'MongoDB Overview'},
+   {$set:{'title':'New MongoDB Tutorial'}})
+
+Example3 (replaceOne):
+	>db.mycol.replaceOne({
+      {'title':'MongoDB Overview'}
+    },
+   {
+      "_id" : ObjectId(5983548781331adf45ec7), "title":"Tutorials Point Overview",
+         "by":"Tutorials Point"
+   }
+)
+
+
+////=================DELETE===================================
+Delete Document:
+Basic syntax of deleteOne or deleteMany method is as follows
+	>db.COLLECTION_NAME.deleteOne(DELLETION_CRITTERIA)
+
+To remove all (like truncate in SQL)
+	>db.NAME.deleteMany()
+
+Example1(Remove only one):
+	>db.mycol.deleteOne{'title':'New MongoDB Tutorial'})
+
+Example2 (Remove all fields but remain collection strc):
+	>db.mycol.deleteMany({})
+
+
+Delete a specific collection
+        >db.myCollection.drop()
+
+To delete an entire database 
+         >db.dropDatabase()
+
+
+-----
+findeOne: 
+Returns one document that satisfies the specified query criteria. If multiple documents satisfy the query, this method returns the first document according to the natural order which reflects the order of documents on the disk. 
+
+Syntax:
+ db.collection.findOne(query, projection)
+	- query: Optional. Specifies query selection criteria.
+	- projection:Optional. Specifies the fields to return using projection operators. Omit this parameter to return all fields in the matching document.
+
+
+//=========================INDEX=======collection scan================
+1️⃣ Single Field Index:
+
+db.patients.createIndex({ phone: 1 })
+
+2️⃣ Compound Index
+db.tests.createIndex({ patientId: 1, testDate: -1 })
+db.tests.find({
+    patientId: "------",
+    testDate: "------"
+})
+
+2️⃣ multikey Index
+
+
+{
+    name: "Esraa",
+    skills: [
+        "JavaScript",
+        "React",
+        "MongoDB"
+    ]
+}
+//////
+db.students.createIndex({
+    skills: 1
+})
+
+
+db.students.find({
+    skills: "React"
+})
+
+
+
+>>>TTL//Text//Unique>>self study
+
+---------------
+db.patients.getIndexes()
+---------------
+db.patients.dropIndex("phone_1")
+db.patients.dropIndex({ phone: 1 })
+---------------
+db.patients.dropIndexes()
+
+///=========================OPERATORS========================
+
+1️⃣ Comparison Operators 
+Equality:
+	db.mycol.find({ grade: { $eq: 90 } })
+	db.mycol.find({ grade: 90 })
+
+ 
+Not Equals 	
+	db.mycol.find({"likes":{$ne:50}})
+
+Less Than:
+	db.mycol.find({"likes":{$lt:50}})
+
+Less Than Equals:
+	db.mycol.find({"likes":{$lte:50}})
+
+Greater Than
+	db.mycol.find({"likes":{$gt:50}})
+
+Greater Than Equals 	
+	db.mycol.find({"likes":{$gte:50}})
+
+$in
+db.students.find({ grade: { $in: [70, 80, 90] } })
+
+$nin
+db.students.find({ grade: { $nin: [0, 50] } })
+
+2️⃣ Logical Operators 
+
+And Condition:
+🔹 $and
+>db.mycol.find(
+   {
+      $and: [
+         {key1: value1}, {key2:value2}
+      ]
+   }
+)
+
+db.students.find({
+  $and: [
+    { grade: { $gt: 70 } },
+    { age: { $lt: 25 } }
+  ]
+})
+
+
+🔹 $or
+OR Condition:
+>db.mycol.find(
+   {
+      $or: [
+         {key1: value1}, {key2:value2}
+      ]
+   }
+)
+
+
+Example:
+	>db.post.find(
+	{$or:[
+		{"likes":100},
+		{"title":"NoSQL Database"}
+	]})
+🔹 $not // 🔹 $nor
+
+3️⃣ Update Operators ( )
+🔹 $set
+db.students.updateOne(
+  { name: "Esraa" },
+  { $set: { grade: 100 } }
+)
+
+🔹 $inc>>increase // +//-
+db.lab_orders.updateOne(
+  { _id: 1 },
+  { $inc: { totalTests: 2 } }
+)
+
+🔹 $unset >>remove age field
+ { $unset: { age: "" } }
+
+ 🔹 $push //🔹 $pull
+db.CollentionName.updateOne({name:"ahmed"}, { $push: { skills: "MongoDB" } })
+
+// add in index of selected array 
+db.post.updateMany({},{$push:{"tags.3":"esraa"}})
+
+// more elements
+db.collectionName.updateOne(
+  { name: "ahmed" },
+  { 
+    $push: { 
+      skills: { $each: ["MongoDB", "Node.js", "Express"] } 
+    } 
+  }
+)
+
+4️⃣ Element Operators
+🔹 $exists //🔹 $type
+db.students.find({ age: { $exists: true } })
+
+--------
+db.students.find({
+  age: { $type: "string" }
+})
+
+5️⃣ Evaluation Operators
+🔹 $regex 
+db.students.find({ name: { $regex: "^E /e" } })
+
+
+
+
+//=============RECAP DAY2==========
+//INSTALL MONGO DB SERVER -- 
+//MONGO SHELL -- COMPASS
+//CRUD OPERATIONS 
+//PAGINATION>> LIMIT ,,,SKIP 
+//SORT 
+//PROJECTION>>SELECTED FIELDS 
+//OPERATORS
+//INDEX
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
