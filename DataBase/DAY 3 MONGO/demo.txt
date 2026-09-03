@@ -1,0 +1,460 @@
+use databaseName
+
+////
+db.patients.insertMany([
+{
+    patientId:1,
+    name:"Ahmed",
+    age:25,
+    gender:"Male",
+    city:"Cairo"
+},
+{
+    patientId:2,
+    name:"Sara",
+    age:30,
+    gender:"Female",
+    city:"Alexandria"
+},
+{
+    patientId:3,
+    name:"Omar",
+    age:40,
+    gender:"Male",
+    city:"Cairo"
+},
+{
+    patientId:4,
+    name:"Mona",
+    age:28,
+    gender:"Female",
+    city:"Giza"
+}
+])
+
+///
+db.doctors.insertMany([
+{
+    doctorId:101,
+    name:"Dr. Ali",
+    specialization:"Cardiology"
+},
+{
+    doctorId:102,
+    name:"Dr. Hassan",
+    specialization:"Dermatology"
+},
+{
+    doctorId:103,
+    name:"Dr. Sara",
+    specialization:"Orthopedics"
+}
+])
+
+///
+db.appointments.insertMany([
+
+{
+    appointmentId:3,
+    patientId:3,
+    doctorId:102,
+    fee:400,
+    status:"Pending"
+},
+{
+    appointmentId:4,
+    patientId:1,
+    doctorId:103,
+    fee:700,
+    status:"Completed"
+},
+{
+    appointmentId:5,
+    patientId:4,
+    doctorId:103,
+    fee:650,
+    status:"Completed"
+}
+])
+
+////============embeded=================
+
+db.patients.insertOne({
+
+patientId:1,
+
+name:"Ahmed",
+
+age:25,
+
+city:"Cairo",
+
+appointments:[
+
+{
+
+appointmentId:1,
+
+doctor:{
+
+doctorId:101,
+
+name:"Dr. Ali",
+
+specialization:"Cardiology"
+
+},
+
+fee:500,
+
+status:"Completed"
+
+},
+
+{
+
+appointmentId:2,
+
+doctor:{
+
+doctorId:103,
+
+name:"Dr. Sara",
+
+specialization:"Orthopedics"
+
+},
+
+fee:700,
+
+status:"Pending"
+
+}
+
+]
+
+})
+====
+هات المرضى اللي كشفوا عند
+
+db.patients.find({
+
+"appointments.doctor.name":"Dr. Ali"
+
+})
+
+
+
+///=====================Aggregation=====================
+1) عدد الحجوزات لكل دكتور
+db.appointments.aggregate([
+{
+    $group:{
+        _id:"$doctored",
+        totalAppointments:{
+            $sum:1
+        }
+    }
+}
+])
+
+/////////
+2) إجمالي الإيرادات لكل دكتور
+db.appointments.aggregate([
+{
+    $group:{
+        _id:"$doctorId",
+        totalRevenue:{
+            $sum:"$fee"
+        }
+    }
+}
+])
+////////
+
+3) متوسط سعر الكشف
+
+db.appointments.aggregate([
+{
+    $group:{
+        _id:null,
+        averageFee:{
+            $avg:"$fee"
+        }
+    }
+}
+])
+
+لكل دكتور متوسط سعر الكشف
+
+db.appointments.aggregate([
+{
+    $group:{
+        _id:"$doctorId",
+        averageFee:{
+            $avg:"$fee"
+        }
+    }
+}
+])
+//////////////
+4) أعلى سعر كشف
+db.appointments.aggregate([
+{
+    $group:{
+        _id:null,
+        maxFee:{
+            $max:"$fee"
+        }
+    }
+}
+])
+///////////////=========$lookup=============
+1) اعرض كل Appointment مع بيانات المريض
+db.appointments.aggregate([
+{
+    $lookup:{
+        from:"patients",
+        localField:"patientId",
+        foreignField:"patientId",
+        as:"patient"
+    }
+}
+])
+
+/////
+2) اعرض كل Appointment مع بيانات الدكتور
+db.appointments.aggregate([
+{
+    $lookup:{
+        from:"doctors",
+        localField:"doctorId",
+        foreignField:"doctorId",
+        as:"doctor"
+    }
+}
+])
+/////
+3) اعرض كل Appointment ومعاه بيانات المريض والدكتور
+db.appointments.aggregate([
+{
+    $lookup:{
+        from:"patients",
+        localField:"patientId",
+        foreignField:"patientId",
+        as:"patient"
+    }
+},
+{
+    $lookup:{
+        from:"doctors",
+        localField:"doctorId",
+        foreignField:"doctorId",
+        as:"doctor"
+    }
+}
+])
+
+//////group//
+
+
+db.appointments.aggregate([{
+    
+    $group:{
+        _id:"$doctorId",
+        avg:{
+            $avg:"$fee" // fee+fee+feee+feee
+        },
+        sum:{
+               $sum:"$fee"
+        },
+          Num:{
+               $sum:1
+        }
+    }
+}])
+
+=========================
+db.appointments.aggregate([{
+    
+    $group:{
+        _id:null,
+        Numb:{
+            $sum:1  // +1  +1  +1
+        },
+           total:{
+            $sum:"$fee"
+        },
+        
+          avgFees:{
+              $avg:"$fee"
+            
+        }
+    }
+}])
+
+
+//////
+اعرف كل دكتور عنده كام حجز
+db.appointments.aggregate([
+
+{
+    $group:{
+        _id:"$doctorId",
+        totalAppointments:{
+            $sum:1
+        }
+    }
+},
+
+{
+    $lookup:{
+        from:"doctors",
+        localField:"_id",
+        foreignField:"doctorId",
+        as:"doctor"
+    }
+}
+
+])
+------------------
+db.patients.aggregate([
+  {
+    $match: {
+      city: "Cairo"
+    }
+  }
+])
+-------------------
+db.appointments.aggregate([
+  {
+    $match: {
+      status: "Completed"
+    }
+  },{
+     $group:{
+         _id:null,
+        totalCompApp:{
+             $sum:1
+}
+}
+}
+])
+
+
+-------[{},{}]----destruct using >>$unwind-------
+        aggregate([
+    {
+        $unwind:"$appointments"
+    },
+    {
+        $match:{
+            "appointments.status":"Pending"
+        }
+    }
+])
+
+====================================================
+Amazon
+$group: إجمالي المبيعات لكل منتج.
+$lookup: ربط الطلبات (orders) ببيانات المنتجات (products).
+
+Facebook / LinkedIn
+$group: عدد البوستات لكل مستخدم أو عدد التعليقات لكل بوست.
+$lookup: ربط البوستات ببيانات المستخدمين.
+
+Hospital (المثال السابق)
+$group: عدد الحجوزات أو إجمالي الإيرادات لكل دكتور.
+$lookup: ربط المواعيد ببيانات المرضى والأطباء.
+
+
+
+
+
+
+///=============== backups & restore ======================================
+https://www.mongodb.com/try/download/database-tools
+
+cmd as administrator
+
+>cd C:\Program Files\MongoDB\Server\8.0\bin
+
+✅//------------------packup
+mongodump --db=DbName
+
+mongodump --db=DbName --out=filePath
+
+++++++online++++++++
+mongodump --uri="mongodb+srv://esraa2411:Esraa%402411@clustertest11.emukrop.mongodb.net/myOnlineDB" --out "C:\backup\myOnlineDB"
+
+
+✅//------------------restore
+mongorestore
+
+//restore selected db
+mongorestore --db=DbNamemonfg dump/DbName
+
+
+mongorestore --db=DbName  filePath
+
+++++++online+++++++++
+
+mongorestore --uri="mongodb+srv://esraa2411:Esraa%402411@clustertest11.emukrop.mongodb.net/myNewOnlineDB" --drop --db dbName "C:\Program Files\MongoDB\Server\8.2\bin\dump\dbName"
+
+//=================== 4-Export & import ====================================
+
+✅ 1. Export Collection
+
+mongoexport --db=DbName --collection=collectionName --out="filePath.json"
+
+mongoexport --db=DbName --collection=collectionName --out="filePath.json" --jsonArray
+ 
+
+mongoexport --db=DbName --collection=collectionName --type=csv --fields=item,qty,status --out="filePath.csv"
+
++++++++++online+++++++++++++++++++++++
+mongoexport --uri="mongodb+srv://username:password@cluster0.abcd.mongodb.net/DbName" --collection=patients --out="C:\dump\patients.json" --jsonArray
+
+✅ 2. import Collection
+
+mongoimport --db=DbName --collection=collectionName --file="filePath" --jsonArray
+
+
+mongoimport --db=DbName --collection=collectionName --type=csv --headerline --file="filePath.csv"
+
+
+mongoimport --db=DbName --collection=inventory --file=inventory.json --jsonArray --drop >>>>>>>>احذف الـ collection بالكامل قبل ما تعمل import
+
+
++++++++++online+++++++++++++++++++++++
+
+mongoimport --uri="mongodb+srv://username:password@cluster0.abcd.mongodb.net/DbName" --collection=patients --file="C:\dump\patients.json" --jsonArray --drop
+
+
+
+
+
+
+///DATABAE USERS:
+
+esraafa2411_db_user
+Mihuu89Z5fobEa2u
+
+
+
+mongodb+srv://<db_username>:<db_password>@g-19-cluster.euv1znz.mongodb.net/
+
+
+
+mongodb+srv://esraafa2411_db_user:Mihuu89Z5fobEa2u@g-19-cluster.euv1znz.mongodb.net/
+
+
+
+
+
+
+
+
+
+
+
