@@ -1,0 +1,31 @@
+# 1) Create Project Folder
+mkdir NodeProject
+
+# 2) Open Project
+cd NodeProject
+
+# 3) Initialize Node.js Project
+npm init -y
+
+# 4) Install Express
+npm install express
+
+# 5) Install Nodemon (Development Dependency)
+npm install --save-dev nodemon
+
+# 6) Open Project in VS Code
+code .
+
+# 7) Run Project
+node index.js
+
+# 8) Run Project with Nodemon
+npx nodemon index.js
+
+NodeProject/
+│
+├── node_modules/
+├── package.json
+├── package-lock.json
+├── index.js
+└── .gitignore (optional)
