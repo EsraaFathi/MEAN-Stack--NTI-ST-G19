@@ -1,0 +1,147 @@
+<section class="users-page">
+  <div class="users-shell">
+    <div class="users-intro">
+      <div>
+        <p class="eyebrow">Community / Directory</p>
+        <h1>Meet the people<br /><em>behind the work.</em></h1>
+        <p class="intro-copy">
+          A small, curious crew spread across the map and connected by good ideas.
+        </p>
+      </div>
+      <div class="intro-mark" aria-hidden="true">
+        <span>5</span>
+        <small>active<br />profiles</small>
+      </div>
+    </div>
+
+    <div class="directory-bar">
+      <div class="search-shell">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Browse the directory</span>
+      </div>
+      <span class="directory-count">5 people &middot; 5 cities</span>
+    </div>
+
+    <div class="users-grid">
+      <!-- <article class="user-card featured-card">
+        <div class="card-topline">
+          <span class="profile-number">01</span>
+          <span class="status-dot">Available</span>
+        </div>
+        <div class="avatar" data-tone="0">JD</div>
+        <div class="user-copy">
+          <h2>John Doe</h2>
+          <p>john.doe@example.com</p>
+        </div>
+        <div class="user-meta">
+          <span>New York</span>
+          <span>28 years &middot; male</span>
+        </div>
+        <button type="button" class="profile-link" aria-label="View John Doe profile">
+          View profile <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article> -->
+      <!-- //loop users >> user  -->
+      <!-- *ngFor >> v16 // v17>>v22 >> @for  -->
+      @for (user of users; track user.email) {
+        <article class="user-card">
+          <div class="card-topline">
+            <span class="profile-number">02</span>
+            <span class="status-dot">Available</span>
+          </div>
+          <div class="avatar" data-tone="1">JS</div>
+          <div class="user-copy">
+            <h2>{{ user.name }}</h2>
+            <p>{{ user.email }}</p>
+          </div>
+          <div class="user-meta">
+            <span>{{ user.city }}</span>
+            <span>{{ user.age }}years &middot; {{ user.gender }}</span>
+          </div>
+          <button type="button" class="profile-link" aria-label="View Jane Smith profile">
+            View profile <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+      }
+
+      <!--
+      <article class="user-card">
+        <div class="card-topline">
+          <span class="profile-number">03</span>
+          <span class="status-dot">Available</span>
+        </div>
+        <div class="avatar" data-tone="2">AJ</div>
+        <div class="user-copy">
+          <h2>Alex Johnson</h2>
+          <p>alex.j@domain.org</p>
+        </div>
+        <div class="user-meta">
+          <span>Chicago</span>
+          <span>22 years &middot; male</span>
+        </div>
+        <button type="button" class="profile-link" aria-label="View Alex Johnson profile">
+          View profile <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article>
+
+      <article class="user-card">
+        <div class="card-topline">
+          <span class="profile-number">04</span>
+          <span class="status-dot">Available</span>
+        </div>
+        <div class="avatar" data-tone="1">ED</div>
+        <div class="user-copy">
+          <h2>Emily Davis</h2>
+          <p>emily_davis@company.net</p>
+        </div>
+        <div class="user-meta">
+          <span>Austin</span>
+          <span>40 years &middot; female</span>
+        </div>
+        <button type="button" class="profile-link" aria-label="View Emily Davis profile">
+          View profile <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article>
+
+      <article class="user-card">
+        <div class="card-topline">
+          <span class="profile-number">05</span>
+          <span class="status-dot">Available</span>
+        </div>
+        <div class="avatar" data-tone="2">MB</div>
+        <div class="user-copy">
+          <h2>Michael Brown</h2>
+          <p>mbrown@service.co</p>
+        </div>
+        <div class="user-meta">
+          <span>Seattle</span>
+          <span>20 years &middot; male</span>
+        </div>
+        <button type="button" class="profile-link" aria-label="View Michael Brown profile">
+          View profile <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article>
+      <article class="user-card">
+        <div class="card-topline">
+          <span class="profile-number">05</span>
+          <span class="status-dot">Available</span>
+        </div>
+        <div class="avatar" data-tone="2">MB</div>
+        <div class="user-copy">
+          <h2>Michael Brown</h2>
+          <p>mbrown@service.co</p>
+        </div>
+        <div class="user-meta">
+          <span>Seattle</span>
+          <span>20 years &middot; male</span>
+        </div>
+        <button type="button" class="profile-link" aria-label="View Michael Brown profile">
+          View profile <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article> -->
+    </div>
+  </div>
+</section>

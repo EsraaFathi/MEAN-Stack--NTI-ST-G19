@@ -1,0 +1,28 @@
+node -v  ==> node js version 
+npm -v   ==> package manager
+npm update 
+******************day1 commands********************
+1-npm install -g @angular/cli 
+=======================> to install angular in cmd global
+
+2-ng v   
+======================>check version cmd global
+
+3-ng new project-name --no-standalone   
+=======================> to create no standalone project  in cmd folder 
+
+3-ng new project-name  
+
+ng new project-name  --standalone=false                   ================================> to create standalone project  in cmd folder 
+
+4-ng serve -o ====> port 4200 ====================================>to run project
+
+or npm start =========================>v18 to run project
+5-ng g c name ==> to generate  component
+ng generate  component  name
+
+6- ng g module moduleName
+
+********************************************************************************************************************
+
+
