@@ -1,0 +1,31 @@
+<section class="shop-page">
+  <div class="shop-shell">
+    <header class="shop-hero">
+      <div class="hero-copy">
+        <p class="shop-kicker"><span></span> Curated devices / 2025</p>
+        <h1>Objects with<br /><em>a point of view.</em></h1>
+        <p class="shop-intro">
+          A considered edit of clever tools, cult classics, and things worth keeping close.
+        </p>
+      </div>
+      <div class="hero-stamp" aria-label="Product collection details">
+        <span class="stamp-ring">NEW<br />DROP</span>
+        <strong>{{ products.length }}</strong>
+        <small>pieces<br />in edit</small>
+      </div>
+    </header>
+
+    <div class="shop-rail" aria-label="Collection categories">
+      <span>THE EDIT</span>
+      <span>TECH FOR HUMANS</span>
+      <span>SMALL JOYS</span>
+      <span>READY TO SHIP</span>
+    </div>
+
+    <div class="shop-grid">
+      @for (product of products; track product.id; let index = $index) {
+        <app-prod-card [product]="product"></app-prod-card>
+      }
+    </div>
+  </div>
+</section>

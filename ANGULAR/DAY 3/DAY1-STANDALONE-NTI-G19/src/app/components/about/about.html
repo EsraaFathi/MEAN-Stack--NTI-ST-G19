@@ -1,0 +1,21 @@
+<p>about works!</p>
+<!-- DATA BINDING >>SHOW DATA >> 1- interpolation {{}} // ts >> html -->
+<h1>{{ tiltle }}</h1>
+<p>{{ price }}</p>
+<!-- DATA BINDING >>SHOW DATA >> 2- property binding [property]='data in ts'  ts >> html-->
+<img [src]="url" alt="" />
+<img [src]="url2" alt="" />
+<!-- DATA BINDING >>SHOW DATA >> 3- event binding // >> html >> ts-->
+<button (click)="welcome('esraa')">ANGULAR 22</button>
+<hr />
+<!-- DATA BINDING >>SHOW DATA >> 4- TWO WAY  binding // >> html << - >> ts-->
+<!-- input  // [(ngmodel)] // banana in box -->
+<input
+  type="text"
+  [(ngModel)]="search"
+  name="firstName"
+  id="firstName"
+  class="border-amber-400 border-4"
+/>
+
+<p>{{ search }}</p>

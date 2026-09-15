@@ -1,0 +1,74 @@
+<article class="product-card">
+  <div class="product-topline">
+    @switch (product.category) {
+      @case ('Best Seller') {
+        <span class="product-category"> BESTTTTTTTT </span>
+      }
+      @case ('Fast Delivery') {
+        <span class="product-category"> FASTTTTTTTT </span>
+      }
+      @default {
+        <span class="product-category"> SELLLLLLLLEEEEEEERRRRR </span>
+      }
+    }
+
+    <!-- <span class="product-category">
+              {{ product.category }}
+            </span> -->
+  </div>
+
+  <div class="product-stage">
+    <span class="stage-spark" aria-hidden="true">*</span>
+    <img [src]="product.img" [alt]="product.title" />
+    @if (product.discount > 0) {
+      <span class="sale-tag">-{{ product.discount }}%</span>
+    }
+  </div>
+
+  <h2>{{ product.title | uppercase }}</h2>
+  <div class="product-content">
+    <div class="product-rating" aria-label="Product rating">
+      <span>*****</span> {{ product.rating }} / 5
+    </div>
+
+    <div class="product-footer">
+      <div>
+        <p [ngStyle]="{ color: product.price > 500 ? 'red' : 'green' }" class="product-price">
+          {{ product.price | currency: 'EGP' }}
+        </p>
+        <!-- <p
+                  [ngClass]="{
+                    'text-red-600': product.price > 500,
+                    'text-amber-400': product.price < 500,
+                  }"
+                >
+                  ${{ product.price }}
+                </p> -->
+
+        @if (product.stock < 10 && product.stock > 0) {
+          <p>LAST {{ product.stock }} PRODUCT</p>
+        } @else if (product.stock == 0) {
+          <p>OUT OF STOCK</p>
+        }
+        <p>{{ product.stock }}</p>
+      </div>
+      <div class="product-actions">
+        <button
+          type="button"
+          class="icon-button"
+          [attr.aria-label]="'Add ' + product.title + ' to favorites'"
+        >
+          <span class="icon-[tabler--heart] size-5.5 shrink-0"></span>
+        </button>
+        <button
+          type="button"
+          class="cart-button"
+          [disabled]="product.stock === 0"
+          [attr.aria-label]="'Add ' + product.title + ' to cart'"
+        >
+          <span class="icon-[tabler--plus] size-5.5 shrink-0"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</article>

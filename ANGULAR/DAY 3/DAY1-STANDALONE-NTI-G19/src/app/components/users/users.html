@@ -1,0 +1,37 @@
+<section class="users-page">
+  <div class="users-shell">
+    <div class="users-intro">
+      <div>
+        <p class="eyebrow">Community / Directory</p>
+        <h1>Meet the people<br /><em>behind the work.</em></h1>
+        <p class="intro-copy">
+          A small, curious crew spread across the map and connected by good ideas.
+        </p>
+      </div>
+      <div class="intro-mark" aria-hidden="true">
+        <span>5</span>
+        <small>active<br />profiles</small>
+      </div>
+    </div>
+
+    <div class="directory-bar">
+      <div class="search-shell">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Browse the directory</span>
+      </div>
+      <span class="directory-count">5 people &middot; 5 cities</span>
+    </div>
+
+    <div class="users-grid">
+      <!-- //loop users >> user  -->
+      <!-- DIRECTIVESSSSSSSSSSSSSSSSSSSS -->
+      <!-- *ngFor >> v16 // v17>>v22 >> @for  -->
+      @for (user of usersData; track user.email) {
+        <app-user-card [user]="user"></app-user-card>
+      }
+    </div>
+  </div>
+</section>

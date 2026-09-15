@@ -7,7 +7,29 @@ const app = express();
 const { connectDB } = require("./config/db.config.js");
 const { PORT } = require("./config/env.config.js");
 const { isAuthn } = require("./middlewares/isAuthn.js");
+var cors = require("cors");
+
 //*---MIDDLEWARES--//built in -- custom >>functions >>recive req from front && send res to front
+// app.use(
+//   cors({
+//     origin: "http://localhost:4200/",
+//   }),
+// );
+
+// app.use(
+//   cors({
+//     origin: ["http://localhost:4200/", "http://myweb.com"],
+//   }),
+// );
+
+app.use(
+  cors({
+    origin: "*",
+    // methods: 'GET,POST',
+    // allowedHeaders:''
+  }),
+);
+
 app.use(express.json()); //middleware
 app.use(myMiddleware);
 // app.use(isAuthn);

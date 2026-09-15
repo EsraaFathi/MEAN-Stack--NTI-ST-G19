@@ -25,7 +25,7 @@ const addUsers = (req, res) => {
   userModel
     .create(req.body)
     .then(() => {
-      res.json({ message: "users added successfully" });
+      res.json({ message: "users added successfully", data: "" });
     })
     .catch((err) => {
       console.log("error when adding users", err);
