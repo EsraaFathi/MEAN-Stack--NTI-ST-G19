@@ -3,6 +3,7 @@ import { Iuser } from '../models/iuser';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IuserResponse } from '../models/iuser-response';
+import { IloginData } from '../models/ilogin-data';
 // D.I
 @Service()
 export class UserService {
@@ -22,7 +23,12 @@ export class UserService {
   register(newUser: Iuser): Observable<IuserResponse> {
     //1-req to api
     //2-rec res from api
-
     return this.http.post<IuserResponse>('http://localhost:5000/users', newUser);
+  }
+  //update // delete
+
+  /// {email , password}
+  login(loginData: IloginData): Observable<IuserResponse> {
+    return this.http.post<IuserResponse>('http://localhost:5000/users/login', loginData);
   }
 }

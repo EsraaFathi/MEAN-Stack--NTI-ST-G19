@@ -19,7 +19,9 @@ export class Users {
     this.UserService.getUsers().subscribe({
       next: (res: IuserResponse) => {
         console.log(res);
-        this.usersData = res.data;
+        if (res.data) {
+          this.usersData = res.data;
+        }
         // console.log(this.usersData);
       }, //success
       error: (err) => {

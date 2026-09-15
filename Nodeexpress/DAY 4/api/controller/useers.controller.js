@@ -81,21 +81,21 @@ const loginUser = (req, res) => {
   // }
   //1-
   if (!userEmail || !userPass) {
-    return res.status(401).json({ msg: " PLZ,ENTER EMAIL && PASSWORD" });
+    return res.status(403).json({ message: " PLZ,ENTER EMAIL && PASSWORD" });
   }
   //2-find -- [{}]--findOne ---{}
   userModel
     .findOne({ email: userEmail })
     .then((userDB) => {
       if (!userDB) {
-        return res.status(401).json({ msg: "INVALID EMAIL OR PASSWORD" });
+        return res.status(403).json({ message: "INVALID EMAIL OR PASSWORD" });
       }
       //3- check pass
       bcrypt
         .compare(userPass, userDB.password)
         .then((valid) => {
           if (!valid) {
-            return res.status(403).json({ msg: "INVALID EMAIL OR PASS" });
+            return res.status(403).json({ message: "INVALID EMAIL OR PASS" });
           }
           // two pass is true >> email is true
 
@@ -104,11 +104,13 @@ const loginUser = (req, res) => {
             { id: userDB._id, email: userDB.email },
             "secret-sign-nti-g19",
           );
-          res.status(200).json({ msg: "U LOGGED SUCESSFULLY ", token: token });
+          res
+            .status(200)
+            .json({ message: "U LOGGED SUCESSFULLY ", token: token });
         })
         .catch((err) => {
           console.log("err in compare db", err);
-          res.status(500).json({ msg: "error catched , try again " });
+          res.status(500).json({ message: "error catched , try again " });
         });
     })
     .catch((err) => {
